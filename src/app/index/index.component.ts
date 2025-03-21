@@ -1,11 +1,15 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 import { WorldbankService } from '../worldbank.service';
 
 @Component({
   selector: 'app-index',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [
+// TODO: `HttpClientModule` should not be imported into a component directly.
+// Please refactor the code to add `provideHttpClient()` call to the provider list in the
+// application bootstrap logic and remove the `HttpClientModule` import from this component.
+HttpClientModule],
   templateUrl: './index.component.html',
   styleUrl: './index.component.css'
 })
