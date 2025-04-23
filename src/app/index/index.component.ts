@@ -9,7 +9,7 @@ import { WorldbankService } from '../worldbank.service';
   templateUrl: './index.component.html',
   styleUrl: './index.component.css'
 })
-
+//variables set up to store received API information to display on frontend
 export class IndexComponent implements OnInit{
   countryName = "";
   countryCapital = "";
@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit{
   constructor(private worldBankInfo: WorldbankService,
 ) { }
 countryData!: any;
-
+//Access the paths in the svg file and waits for a user click.
 ngOnInit(): void{
   const accessSVG = document.querySelector('svg');
   const allPaths = accessSVG?.querySelectorAll('path');
@@ -30,6 +30,7 @@ ngOnInit(): void{
   });
 }
 
+//receives country code based on the country the user clicked and stores it then sends it to the API call service.
 chosenCountry(event: MouseEvent){
   const path = event.target as SVGAElement;
   const countryID = path.id;
@@ -47,23 +48,5 @@ chosenCountry(event: MouseEvent){
 
 }
 }
-
-
-  // const svgElement = this.elementRef.nativeElement.querySelector('svg');
-  // const pathElements = svgElement.querySelectorAll('path');
-  // pathElements.forEach((path: SVGPathElement) => {
-  //   path.addEventListener('click', this.handleClick.bind(this));
-  // });
-
-
-
-
-
-// handleClick(event: MouseEvent) {
-//   const path = event.target as SVGPathElement;
-//   const countryId = path.id;
-//   this.countrySelected.emit(countryId);
-
-// };
 
 
