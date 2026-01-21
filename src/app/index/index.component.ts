@@ -68,7 +68,16 @@ handleZoom(event: WheelEvent): void {
   event.preventDefault();
   const zoomStep = 0.1;
   const delta = event.deltaY > 0 ? -zoomStep : zoomStep;
-  this.zoomLevel = Math.max(1, Math.min(10, this.zoomLevel + delta));
+  const newZoom = Math.max(1, Math.min(10, this.zoomLevel + delta));
+  
+  // When zooming out, gradually center the map back
+  if (newZoom < this.zoomLevel) {
+    const zoomRatio = newZoom / this.zoomLevel;
+    this.translateX *= zoomRatio;
+    this.translateY *= zoomRatio;
+  }
+  
+  this.zoomLevel = newZoom;
   
   // Reset position when zooming back to 1x
   if (this.zoomLevel === 1) {

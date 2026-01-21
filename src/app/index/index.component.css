@@ -26,6 +26,7 @@
     padding: 1.5rem;
     gap: 1.5rem;
     margin-top: 5dvh;
+    overflow-x: hidden;
 }
 
 .map_column{
@@ -96,20 +97,20 @@
 /* Mobile Zoom Buttons */
 .zoom_controls_mobile{
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 0.5rem;
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 10;
 }
 
 .zoom_button{
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.6rem;
     background-color: rgb(0, 114, 207);
     color: white;
     border: none;
@@ -117,6 +118,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    font-size: 0.85rem;
 }
 
 .zoom_button:hover{
