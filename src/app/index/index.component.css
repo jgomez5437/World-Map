@@ -26,7 +26,6 @@
     padding: 1.5rem;
     gap: 1.5rem;
     margin-top: 5dvh;
-    overflow-y: auto;
 }
 
 .map_column{
@@ -40,6 +39,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    z-index: 1;
 }
 
 .svg_container{
@@ -135,6 +135,8 @@
     justify-content: center;
     align-items: flex-start;
     padding-top: 0;
+    position: relative;
+    z-index: 50;
 }
 
 .info_background{
@@ -185,11 +187,14 @@ svg path:hover{
         max-width: 100%;
         width: 100%;
         min-height: 250px;
+        max-height: 45vh;
     }
 
     .country_info_column{
         width: 100%;
         max-width: 100%;
+        max-height: 50vh;
+        overflow-y: auto;
     }
 }
 
@@ -207,8 +212,14 @@ svg path:hover{
     }
 
     .map_column{
-        min-height: 300px;
+        min-height: 200px;
+        max-height: 40vh;
         max-width: 100%;
+    }
+
+    .country_info_column{
+        max-height: 55vh;
+        overflow-y: auto;
     }
 
     .info_background{
@@ -245,8 +256,14 @@ svg path:hover{
     }
 
     .map_column{
-        min-height: 250px;
+        min-height: 180px;
+        max-height: 35vh;
         max-width: 100%;
+    }
+
+    .country_info_column{
+        max-height: 60vh;
+        overflow-y: auto;
     }
 
     .info_background{
