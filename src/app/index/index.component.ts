@@ -69,6 +69,12 @@ handleZoom(event: WheelEvent): void {
   const zoomStep = 0.1;
   const delta = event.deltaY > 0 ? -zoomStep : zoomStep;
   this.zoomLevel = Math.max(1, Math.min(10, this.zoomLevel + delta));
+  
+  // Reset position when zooming back to 1x
+  if (this.zoomLevel === 1) {
+    this.translateX = 0;
+    this.translateY = 0;
+  }
 }
 
 handleDragStart(event: MouseEvent): void {
