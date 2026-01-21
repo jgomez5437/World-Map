@@ -22,11 +22,11 @@
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     padding: 1.5rem;
     gap: 1.5rem;
     margin-top: 5dvh;
-    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .map_column{
@@ -36,14 +36,97 @@
     height: auto;
     aspect-ratio: 2 / 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.svg_container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+    cursor: grab;
+}
+
+.svg_container.dragging{
+    cursor: grabbing;
 }
 
 #map_image{
     width: 100%;
     height: 100%;
     object-fit: contain;
+    user-select: none;
+    pointer-events: auto;
+}
+
+/* Desktop Zoom Slider */
+.zoom_controls_desktop{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.zoom_slider{
+    width: 120px;
+    height: 6px;
+    cursor: pointer;
+}
+
+.zoom_display{
+    min-width: 50px;
+    font-weight: bold;
+    color: rgb(0, 114, 207);
+}
+
+/* Mobile Zoom Buttons */
+.zoom_controls_mobile{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.zoom_button{
+    padding: 0.4rem 0.6rem;
+    background-color: rgb(0, 114, 207);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.85rem;
+}
+
+.zoom_button:hover{
+    background-color: rgb(0, 90, 180);
+}
+
+.zoom_button:active{
+    background-color: rgb(0, 70, 150);
 }
 
 .country_info_column{
@@ -54,6 +137,8 @@
     justify-content: center;
     align-items: flex-start;
     padding-top: 0;
+    position: relative;
+    z-index: 50;
 }
 
 .info_background{
@@ -96,18 +181,24 @@ svg path:hover{
 @media (max-width: 1024px) {
     .world_map_div{
         flex-direction: column;
+        flex-wrap: wrap;
         align-items: center;
+        min-height: auto;
     }
 
     .map_column{
         max-width: 100%;
         width: 100%;
-        min-height: 250px;
+        min-height: 200px;
+        max-height: none;
+        flex-shrink: 0;
     }
 
     .country_info_column{
         width: 100%;
         max-width: 100%;
+        overflow-y: auto;
+        flex: 1 1 auto;
     }
 }
 
@@ -120,13 +211,27 @@ svg path:hover{
     .world_map_div{
         min-height: calc(100vh - 4dvh);
         margin-top: 4dvh;
-        padding: 1rem 0.5rem;
+        padding: 0.75rem;
         gap: 0.75rem;
+        overflow: hidden;
+        justify-content: space-between;
+        align-items: stretch;
     }
 
     .map_column{
-        min-height: 300px;
+        min-height: 180px;
         max-width: 100%;
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .country_info_column{
+        min-height: 150px;
+        overflow-y: auto;
+        flex: 0 0 auto;
+        width: 100%;
     }
 
     .info_background{
@@ -158,13 +263,27 @@ svg path:hover{
     .world_map_div{
         min-height: calc(100vh - 4dvh);
         margin-top: 4dvh;
-        padding: 0.75rem;
+        padding: 0.5rem;
         gap: 0.5rem;
+        overflow: hidden;
+        justify-content: space-between;
+        align-items: stretch;
     }
 
     .map_column{
-        min-height: 250px;
+        min-height: 160px;
         max-width: 100%;
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .country_info_column{
+        min-height: 120px;
+        overflow-y: auto;
+        flex: 0 0 auto;
+        width: 100%;
     }
 
     .info_background{

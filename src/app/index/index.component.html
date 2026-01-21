@@ -5,6 +5,23 @@
 </div>
 <div class="world_map_div">
     <div class="map_column">
+        <!-- Mobile Zoom Buttons -->
+        <div class="zoom_controls_mobile" *ngIf="isMobile">
+            <button class="zoom_button" (click)="setZoomLevel(1)">1.0x</button>
+            <button class="zoom_button" (click)="setZoomLevel(2)">2.0x</button>
+            <button class="zoom_button" (click)="setZoomLevel(5)">5.0x</button>
+            <button class="zoom_button" (click)="setZoomLevel(10)">10.0x</button>
+        </div>
+
+        <!-- Desktop Zoom Slider -->
+        <div class="zoom_controls_desktop" *ngIf="!isMobile">
+            <label for="zoom_slider">Zoom:</label>
+            <input type="range" id="zoom_slider" min="1" max="10" step="0.1" [(ngModel)]="zoomLevel" class="zoom_slider">
+            <span class="zoom_display">{{ (zoomLevel * 100).toFixed(0) }}%</span>
+        </div>
+
+        <!-- SVG Map Container with Zoom -->
+        <div class="svg_container" [style.transform]="getTransformStyle()" [class.dragging]="isDragging">
         <svg id="map_image"
         viewBox="0 0 1010 600" 
         preserveAspectRatio="xMidYMid meet"
@@ -1042,6 +1059,7 @@
      title="Zimbabwe"
      id="ZW" />
 </svg>
+        </div>
     </div>
     <div class="country_info_column">
         <div class="info_background">
