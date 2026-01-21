@@ -21,6 +21,11 @@ export class IndexComponent implements OnInit{
   latitude = "";
   zoomLevel = 1;
   isMobile = false;
+  isDragging = false;
+  dragStartX = 0;
+  dragStartY = 0;
+  translateX = 0;
+  translateY = 0;
   @Output() clickedCountry = new EventEmitter<string>();
   constructor(private worldBankInfo: WorldbankService,
 ) { }
@@ -41,6 +46,18 @@ ngOnInit(): void{
     const mapContainer = document.querySelector('.map_column');
     mapContainer?.addEventListener('wheel', (event: Event) => this.handleZoom(event as WheelEvent), { passive: false });
   }
+
+  // Add drag listeners for all screen sizes
+  const mapContainer = document.querySelector('.map_column');
+  mapContainer?.addEventListener('mousedown', (event: Event) => this.handleDragStart(event as MouseEvent));
+  mapContainer?.addEventListener('mousemove', (event: Event) => this.handleDragMove(event as MouseEvent));
+  mapContainer?.addEventListener('mouseup', (event: Event) => this.handleDragEnd(event as MouseEvent));
+  mapContainer?.addEventListener('mouseleave', (event: Event) => this.handleDragEnd(event as MouseEvent));
+  
+  // Add touch events for mobile drag
+  mapContainer?.addEventListener('touchstart', (event: Event) => this.handleTouchStart(event as TouchEvent));
+  mapContainer?.addEventListener('touchmove', (event: Event) => this.handleTouchMove(event as TouchEvent), { passive: false });
+  mapContainer?.addEventListener('touchend', (event: Event) => this.handleTouchEnd(event as TouchEvent));
 }
 
 checkIfMobile(): void {
@@ -54,12 +71,67 @@ handleZoom(event: WheelEvent): void {
   this.zoomLevel = Math.max(1, Math.min(10, this.zoomLevel + delta));
 }
 
+handleDragStart(event: MouseEvent): void {
+  if (this.zoomLevel > 1) {
+    this.isDragging = true;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
+  }
+}
+
+handleDragMove(event: MouseEvent): void {
+  if (!this.isDragging) return;
+  
+  const deltaX = event.clientX - this.dragStartX;
+  const deltaY = event.clientY - this.dragStartY;
+  
+  this.translateX += deltaX;
+  this.translateY += deltaY;
+  
+  this.dragStartX = event.clientX;
+  this.dragStartY = event.clientY;
+}
+
+handleDragEnd(event: MouseEvent): void {
+  this.isDragging = false;
+}
+
+handleTouchStart(event: TouchEvent): void {
+  if (this.zoomLevel > 1 && event.touches.length === 1) {
+    this.isDragging = true;
+    this.dragStartX = event.touches[0].clientX;
+    this.dragStartY = event.touches[0].clientY;
+  }
+}
+
+handleTouchMove(event: TouchEvent): void {
+  if (!this.isDragging || event.touches.length !== 1) return;
+  
+  event.preventDefault();
+  
+  const deltaX = event.touches[0].clientX - this.dragStartX;
+  const deltaY = event.touches[0].clientY - this.dragStartY;
+  
+  this.translateX += deltaX;
+  this.translateY += deltaY;
+  
+  this.dragStartX = event.touches[0].clientX;
+  this.dragStartY = event.touches[0].clientY;
+}
+
+handleTouchEnd(event: TouchEvent): void {
+  this.isDragging = false;
+}
+
 setZoomLevel(level: number): void {
   this.zoomLevel = level;
+  // Reset position when zooming
+  this.translateX = 0;
+  this.translateY = 0;
 }
 
 getTransformStyle(): string {
-  return `scale(${this.zoomLevel})`;
+  return `translate(${this.translateX}px, ${this.translateY}px) scale(${this.zoomLevel})`;
 }
 
 //receives country code based on the country the user clicked and stores it then sends it to the API call service.

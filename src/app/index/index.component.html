@@ -21,7 +21,7 @@
         </div>
 
         <!-- SVG Map Container with Zoom -->
-        <div class="svg_container" [style.transform]="getTransformStyle()">
+        <div class="svg_container" [style.transform]="getTransformStyle()" [class.dragging]="isDragging">
         <svg id="map_image"
         viewBox="0 0 1010 600" 
         preserveAspectRatio="xMidYMid meet"
