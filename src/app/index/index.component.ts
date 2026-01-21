@@ -39,7 +39,7 @@ ngOnInit(): void{
   // Add zoom listener for desktop
   if (!this.isMobile) {
     const mapContainer = document.querySelector('.map_column');
-    mapContainer?.addEventListener('wheel', this.handleZoom.bind(this), { passive: false });
+    mapContainer?.addEventListener('wheel', (event: Event) => this.handleZoom(event as WheelEvent), { passive: false });
   }
 }
 
